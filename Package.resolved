@@ -1,0 +1,14 @@
+{
+  "originHash" : "8d809b67efe7412ecbc8dfb3118a14c40247dcadb6feb91e089ac5b0a9f47585",
+  "pins" : [
+    {
+      "identity" : "simpledebugger",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EmergeTools/SimpleDebugger",
+      "state" : {
+        "revision" : "8970983a2d1c68f0579eaaa0c22a4a4dd9d710b4"
+      }
+    }
+  ],
+  "version" : 3
+}

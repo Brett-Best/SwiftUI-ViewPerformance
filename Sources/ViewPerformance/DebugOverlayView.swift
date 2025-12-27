@@ -29,56 +29,66 @@ public struct DebugOverlayView: View {
                 }.buttonStyle(.plain)
             }
             if isExpanded {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Most Recent")
-                        .font(.caption)
-                        .foregroundStyle(.primary)
-                  ForEach(timingStore.entries.suffix(3).reversed()) { entry in
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(entry.name)
-                                .font(.caption)
-                                .foregroundStyle(.primary)
-                            HStack {
-                                Text("Renders:")
+                if timingStore.isDebuggerConnected {
+                    HStack(spacing: 6) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.yellow)
+                        Text("Performance tracking is disabled while the debugger is attached.")
+                            .font(.caption)
+                            .foregroundStyle(.primary)
+                    }
+                } else {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Most Recent")
+                            .font(.caption)
+                            .foregroundStyle(.primary)
+                        ForEach(timingStore.entries.suffix(3).reversed()) { entry in
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(entry.name)
                                     .font(.caption)
                                     .foregroundStyle(.primary)
-                                Text("\(entry.recentDurations.count)")
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                                Spacer()
-                                Text("Avg:")
-                                    .font(.caption)
-                                    .foregroundStyle(.primary)
-                                Text(String(format: "%.1f ms", entry.average))
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
+                                HStack {
+                                    Text("Renders:")
+                                        .font(.caption)
+                                        .foregroundStyle(.primary)
+                                    Text("\(entry.recentDurations.count)")
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                    Spacer()
+                                    Text("Avg:")
+                                        .font(.caption)
+                                        .foregroundStyle(.primary)
+                                    Text(String(format: "%.1f ms", entry.average))
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                }
                             }
                         }
                     }
-                }
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Slowest")
-                        .font(.caption)
-                        .foregroundStyle(.primary)
-                    ForEach(timingStore.entries.sorted(by: { $0.average > $1.average }).prefix(3), id: \.id) { entry in
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(entry.name)
-                                .font(.caption)
-                                .foregroundStyle(.primary)
-                            HStack {
-                                Text("Renders:")
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Slowest")
+                            .font(.caption)
+                            .foregroundStyle(.primary)
+                        ForEach(timingStore.entries.sorted(by: { $0.average > $1.average }).prefix(3), id: \.id) { entry in
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(entry.name)
                                     .font(.caption)
                                     .foregroundStyle(.primary)
-                                Text("\(entry.recentDurations.count)")
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                                Spacer()
-                                Text("Avg:")
-                                    .font(.caption)
-                                    .foregroundStyle(.primary)
-                                Text(String(format: "%.1f ms", entry.average))
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
+                                HStack {
+                                    Text("Renders:")
+                                        .font(.caption)
+                                        .foregroundStyle(.primary)
+                                    Text("\(entry.recentDurations.count)")
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                    Spacer()
+                                    Text("Avg:")
+                                        .font(.caption)
+                                        .foregroundStyle(.primary)
+                                    Text(String(format: "%.1f ms", entry.average))
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                }
                             }
                         }
                     }
@@ -112,7 +122,8 @@ public struct DebugOverlayView: View {
 
 #if DEBUG
 #Preview {
-    DebugOverlayView(timingStore: BodyTracker(), initialOffset: .zero)
+    let tracker = BodyTracker()
+    DebugOverlayView(timingStore: tracker, initialOffset: .zero)
 }
 #endif
 

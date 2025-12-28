@@ -3,7 +3,7 @@ import Darwin
 
 @Observable
 @MainActor
-public class BodyTracker {
+public final class BodyTracker {
   
   struct Entry: Identifiable {
       var id: String {
@@ -15,7 +15,7 @@ public class BodyTracker {
   }
   
   private var timingMap: [String: [Double]] = [:]
-  public let isDebuggerConnected: Bool
+  let isDebuggerConnected: Bool
   
   var entries: [Entry] {
     timingMap.map { (name, durations) in

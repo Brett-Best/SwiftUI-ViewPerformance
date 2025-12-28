@@ -27,7 +27,7 @@ private func getTypeName(descriptor: UnsafePointer<TargetModuleContextDescriptor
   }
 }
 
-public typealias LookupResult = (name: String, proto: String, body: UInt64)
+typealias LookupResult = (name: String, proto: String, body: UInt64)
 
 private func parseConformance(conformance: UnsafePointer<ProtocolConformanceDescriptor>, names: [String]) -> LookupResult? {
   let flags = conformance.pointee.conformanceFlags
@@ -75,7 +75,7 @@ typealias mach_header_type = mach_header
 typealias mach_header_type = mach_header_64
 #endif
 
-public func getViews() -> [LookupResult] {
+func getViews() -> [LookupResult] {
   let images = _dyld_image_count()
   var types = [LookupResult]()
   for i in 0..<images {

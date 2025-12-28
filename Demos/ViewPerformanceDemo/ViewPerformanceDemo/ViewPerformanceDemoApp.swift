@@ -1,17 +1,10 @@
-//
-//  ViewPerformanceDemoApp.swift
-//  ViewPerformanceDemo
-//
-//  Created by Noah Martin on 12/27/25.
-//
-
 import SwiftUI
 import ViewPerformance
 
 @main
 struct ViewPerformanceDemoApp: App {
 
-   var bodyTracker: BodyTracker
+   let bodyTracker: BodyTracker
 
    init() {
      bodyTracker = BodyTracker()

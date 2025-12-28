@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  ViewPerformanceDemo
-//
-//  Created by Noah Martin on 12/27/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {

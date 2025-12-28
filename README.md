@@ -2,6 +2,8 @@
 
 A utility to track performance of SwiftUI views. It automatically tracks the duration of view `body` accessors.
 
+![Screenshot of ViewPerformance in an app.](/images/example.png)
+
 > [!IMPORTANT]
 > The debugger must not be connected for this to work. You can disable it by unchecking "Debug executable" in your scheme’s run configuration. Although the debugger can’t be running the app needs to be signed with debug entitlements, it **does not work in production apps**.
 

@@ -293,10 +293,13 @@ func lookupSwiftUIViewBodyRequirementDescriptor() -> UnsafeMutableRawPointer? {
 /// - Note: This is a *descriptor* address (not a function pointer).
 func lookupSwiftUILayoutSizeThatFitsRequirementDescriptor() -> UnsafeMutableRawPointer? {
     // Try known symbol variations for different Swift/SwiftUI versions
+    // Note: The Layout protocol is defined in SwiftUICore, not SwiftUI
     let symbols = [
-        // Primary - newer versions
+        // SwiftUICore symbols (iOS 16+, macOS 13+)
+        "$s11SwiftUICore0A0P12sizeThatFits8proposal8subviews5cache7CoreFou0F4SizeVAA012ProposedViewK0V_AA0j10SubviewsK0Vz1_QPtFTq",
+        "$s11SwiftUICore0A0P12sizeThatFits8proposal8subviews5cache0F4SizeVAA012ProposedViewK0V_AA0j10SubviewsK0Vz1_QPtFTq",
+        // SwiftUI symbols (older versions, fallback)
         "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq",
-        // Alternative variations
         "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq",
         "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA0bC0G0V_AA0i10SubviewsJ0Vz1_QPtFTq",
         "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews7CoreFou0F4SizeVAA012ProposedViewI0V_AA0h10SubviewsI0VtFTq",
@@ -305,9 +308,11 @@ func lookupSwiftUILayoutSizeThatFitsRequirementDescriptor() -> UnsafeMutableRawP
     for (index, symbol) in symbols.enumerated() {
         if let sym = dlsym(UnsafeMutableRawPointer(bitPattern: -2), symbol) {
             if index == 0 {
-                print("Found Layout.sizeThatFits descriptor using primary symbol")
+                print("Found Layout.sizeThatFits descriptor using primary symbol (SwiftUICore)")
+            } else if index < 2 {
+                print("Found Layout.sizeThatFits descriptor using SwiftUICore symbol #\(index)")
             } else {
-                print("Found Layout.sizeThatFits descriptor using alternative symbol #\(index)")
+                print("Found Layout.sizeThatFits descriptor using SwiftUI fallback symbol #\(index)")
             }
             return sym
         }

@@ -1,0 +1,271 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.ViewPerformance-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/usr/share/swift/usr/bin/swiftc",
+      "fileList" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/sources",
+      "importPath" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/BodyTracker.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/ConformanceLookup.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/DebugOverlayView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/MetadataTypes.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/Hook.mm.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "ViewPerformance",
+      "moduleOutputPath" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/Modules/ViewPerformance.swiftmodule",
+      "objects" : [
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/BodyTracker.swift.o",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ConformanceLookup.swift.o",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/DebugOverlayView.swift.o",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/MetadataTypes.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-Xcc",
+        "-fmodule-map-file=/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/module.modulemap",
+        "-Xcc",
+        "-I",
+        "-Xcc",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformanceObjC/include",
+        "-Xcc",
+        "-fmodule-map-file=/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/module.modulemap",
+        "-Xcc",
+        "-I",
+        "-Xcc",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/include",
+        "-module-cache-path",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/include/ViewPerformance-Swift.h",
+        "-swift-version",
+        "6",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "swiftui_viewperformance",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/BodyTracker.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ConformanceLookup.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/DebugOverlayView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/MetadataTypes.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/Modules/ViewPerformance.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/BodyTracker.swift",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/ConformanceLookup.swift",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/DebugOverlayView.swift",
+        "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/MetadataTypes.swift"
+      ],
+      "tempsPath" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "ViewPerformance" : [
+      "/usr/share/swift/usr/bin/swiftc",
+      "-module-name",
+      "ViewPerformance",
+      "-package-name",
+      "swiftui_viewperformance",
+      "-c",
+      "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/BodyTracker.swift",
+      "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/ConformanceLookup.swift",
+      "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/DebugOverlayView.swift",
+      "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/MetadataTypes.swift",
+      "-I",
+      "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-Xcc",
+      "-fmodule-map-file=/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/module.modulemap",
+      "-Xcc",
+      "-I",
+      "-Xcc",
+      "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformanceObjC/include",
+      "-Xcc",
+      "-fmodule-map-file=/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/module.modulemap",
+      "-Xcc",
+      "-I",
+      "-Xcc",
+      "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/include",
+      "-module-cache-path",
+      "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/include/ViewPerformance-Swift.h",
+      "-swift-version",
+      "6",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "swiftui_viewperformance",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/usr/share/swift/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "SimpleDebugger" : [
+
+    ],
+    "ViewPerformance" : [
+      "ViewPerformanceObjC",
+      "SimpleDebugger"
+    ],
+    "ViewPerformanceObjC" : [
+      "SimpleDebugger"
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/BodyTracker.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/ConformanceLookup.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/DebugOverlayView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/MetadataTypes.swift"
+        }
+      ],
+      "outputFilePath" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/sources"
+    },
+    "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/usr/share/swift/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"
+    }
+  }
+}

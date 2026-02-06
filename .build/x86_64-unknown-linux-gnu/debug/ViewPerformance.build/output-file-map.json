@@ -1,0 +1,33 @@
+{
+  "": {
+    "swift-dependencies": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/master.swiftdeps"
+  },
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/BodyTracker.swift": {
+    "dependencies": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/BodyTracker.d",
+    "object": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/BodyTracker.swift.o",
+    "swiftmodule": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/BodyTracker~partial.swiftmodule",
+    "swift-dependencies": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/BodyTracker.swiftdeps",
+    "diagnostics": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/BodyTracker.dia"
+  },
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/ConformanceLookup.swift": {
+    "dependencies": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ConformanceLookup.d",
+    "object": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ConformanceLookup.swift.o",
+    "swiftmodule": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ConformanceLookup~partial.swiftmodule",
+    "swift-dependencies": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ConformanceLookup.swiftdeps",
+    "diagnostics": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ConformanceLookup.dia"
+  },
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/DebugOverlayView.swift": {
+    "dependencies": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/DebugOverlayView.d",
+    "object": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/DebugOverlayView.swift.o",
+    "swiftmodule": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/DebugOverlayView~partial.swiftmodule",
+    "swift-dependencies": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/DebugOverlayView.swiftdeps",
+    "diagnostics": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/DebugOverlayView.dia"
+  },
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/MetadataTypes.swift": {
+    "dependencies": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/MetadataTypes.d",
+    "object": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/MetadataTypes.swift.o",
+    "swiftmodule": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/MetadataTypes~partial.swiftmodule",
+    "swift-dependencies": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/MetadataTypes.swiftdeps",
+    "diagnostics": "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/MetadataTypes.dia"
+  }
+}

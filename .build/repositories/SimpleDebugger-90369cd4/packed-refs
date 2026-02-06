@@ -1,0 +1,17 @@
+# pack-refs with: peeled fully-peeled sorted 
+8970983a2d1c68f0579eaaa0c22a4a4dd9d710b4 refs/heads/addSingleStep
+caff4509836bef78f88601acab7d40c32c55299d refs/heads/hookDemo
+8970983a2d1c68f0579eaaa0c22a4a4dd9d710b4 refs/heads/main
+b43008a1e7c1a78220554864555e256d20a1e203 refs/heads/noahsmartin-patch-1
+2b541eb52cd7341f9c370eb75eea12187c568901 refs/pull/1/head
+b43008a1e7c1a78220554864555e256d20a1e203 refs/pull/10/head
+21afc52d0d6332e1253125e158d2270a8f86556b refs/pull/2/head
+78622f52c171bdd885e62646dad3164a3a3a71e4 refs/pull/3/head
+ed956842026b04e7a1b39f3a91207ce3827d7ef8 refs/pull/4/head
+b00716c5ea539249bfe3f5d933e5982c88a8f012 refs/pull/5/head
+a0afb58be15936a83ac13cba56e67b6ca79ffc7a refs/pull/6/head
+52f37898ad24e5a827a8b01523ca9d2a994dd2ae refs/pull/7/head
+cb93e47a27d12234d71d97672a7b80f88f885dd7 refs/pull/8/head
+aee6eb2aef93e13c922775d4213048f5e32becd2 refs/pull/9/head
+930ef941c3303efe3a81a26fbd1569fc27d5ae19 refs/tags/v0.1.0
+f065263eb5db95874b690408d136b573c939db9e refs/tags/v1.0

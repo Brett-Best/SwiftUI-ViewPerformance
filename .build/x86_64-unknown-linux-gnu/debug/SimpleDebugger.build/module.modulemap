@@ -1,0 +1,4 @@
+module SimpleDebugger {
+    umbrella header "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/include/SimpleDebugger.h"
+    export *
+}

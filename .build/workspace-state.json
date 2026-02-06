@@ -1,0 +1,29 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "simpledebugger",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/EmergeTools/SimpleDebugger",
+          "name" : "SimpleDebugger"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "8970983a2d1c68f0579eaaa0c22a4a4dd9d710b4"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "SimpleDebugger"
+      }
+    ],
+    "prebuilts" : [
+
+    ]
+  },
+  "version" : 7
+}

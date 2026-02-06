@@ -1,0 +1,93 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "PackageStructure": ["<PackageStructure>"]
+  "SimpleDebugger-x86_64-unknown-linux-gnu-debug.module": ["<SimpleDebugger-x86_64-unknown-linux-gnu-debug.module>"]
+  "ViewPerformance-x86_64-unknown-linux-gnu-debug.module": ["<ViewPerformance-x86_64-unknown-linux-gnu-debug.module>"]
+  "ViewPerformanceObjC-x86_64-unknown-linux-gnu-debug.module": ["<ViewPerformanceObjC-x86_64-unknown-linux-gnu-debug.module>"]
+  "main": ["<ViewPerformance-x86_64-unknown-linux-gnu-debug.module>","<ViewPerformanceObjC-x86_64-unknown-linux-gnu-debug.module>"]
+  "test": ["<ViewPerformance-x86_64-unknown-linux-gnu-debug.module>","<ViewPerformanceObjC-x86_64-unknown-linux-gnu-debug.module>"]
+default: "main"
+nodes:
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformanceObjC/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+commands:
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/SimpleDebugger.cpp.o":
+    tool: clang
+    inputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/SimpleDebugger.cpp"]
+    outputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/SimpleDebugger.cpp.o"]
+    description: "Compiling SimpleDebugger SimpleDebugger.cpp"
+    args: ["/usr/share/swift/usr/bin/clang","-target","x86_64-unknown-linux-gnu","-O0","-DSWIFT_PACKAGE=1","-DDEBUG=1","-fblocks","-index-store-path","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/index/store","-I","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/include","-fPIC","-g","-g","-fno-omit-frame-pointer","-w","-MD","-MT","dependencies","-MF","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/SimpleDebugger.cpp.d","-std=c++20","-c","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/SimpleDebugger.cpp","-o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/SimpleDebugger.cpp.o"]
+    deps: "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/SimpleDebugger.cpp.d"
+
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/emg_vm_protect.c.o":
+    tool: clang
+    inputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/emg_vm_protect.c"]
+    outputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/emg_vm_protect.c.o"]
+    description: "Compiling SimpleDebugger emg_vm_protect.c"
+    args: ["/usr/share/swift/usr/bin/clang","-target","x86_64-unknown-linux-gnu","-O0","-DSWIFT_PACKAGE=1","-DDEBUG=1","-fblocks","-index-store-path","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/index/store","-I","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/include","-fPIC","-g","-fno-omit-frame-pointer","-w","-MD","-MT","dependencies","-MF","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/emg_vm_protect.c.d","-c","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/emg_vm_protect.c","-o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/emg_vm_protect.c.o"]
+    deps: "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/emg_vm_protect.c.d"
+
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ViewPerformance.swiftmodule.o":
+    tool: shell
+    inputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/Modules/ViewPerformance.swiftmodule"]
+    outputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ViewPerformance.swiftmodule.o"]
+    description: "Wrapping AST for ViewPerformance for debugging"
+    args: ["/usr/share/swift/usr/bin/swiftc","-modulewrap","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/Modules/ViewPerformance.swiftmodule","-o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ViewPerformance.swiftmodule.o","-target","x86_64-unknown-linux-gnu"]
+
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/BodyTracker.swift","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/ConformanceLookup.swift","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/DebugOverlayView.swift","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/MetadataTypes.swift"]
+    outputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/sources"]
+    description: "Write auxiliary file /home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/sources"
+
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/Hook.mm.o":
+    tool: clang
+    inputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformanceObjC/Hook.mm"]
+    outputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/Hook.mm.o"]
+    description: "Compiling ViewPerformanceObjC Hook.mm"
+    args: ["/usr/share/swift/usr/bin/clang","-target","x86_64-unknown-linux-gnu","-O0","-DSWIFT_PACKAGE=1","-DDEBUG=1","-fblocks","-index-store-path","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/index/store","-I","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformanceObjC/include","-I","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/include","-fmodule-map-file=/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/module.modulemap","-fPIC","-g","-g","-fno-omit-frame-pointer","-MD","-MT","dependencies","-MF","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/Hook.mm.d","-std=c++20","-c","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformanceObjC/Hook.mm","-o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/Hook.mm.o"]
+    deps: "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/Hook.mm.d"
+
+  "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/usr/share/swift/usr/bin/swiftc"]
+    outputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"
+
+  "<SimpleDebugger-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/SimpleDebugger.cpp.o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/emg_vm_protect.c.o"]
+    outputs: ["<SimpleDebugger-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "<ViewPerformance-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/BodyTracker.swift.o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ConformanceLookup.swift.o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/DebugOverlayView.swift.o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/MetadataTypes.swift.o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/Modules/ViewPerformance.swiftmodule"]
+    outputs: ["<ViewPerformance-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "<ViewPerformanceObjC-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/Hook.mm.o"]
+    outputs: ["<ViewPerformanceObjC-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "C.ViewPerformance-x86_64-unknown-linux-gnu-debug.module":
+    tool: shell
+    inputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/BodyTracker.swift","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/ConformanceLookup.swift","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/DebugOverlayView.swift","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/MetadataTypes.swift","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/Hook.mm.o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/sources"]
+    outputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/BodyTracker.swift.o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/ConformanceLookup.swift.o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/DebugOverlayView.swift.o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/MetadataTypes.swift.o","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/Modules/ViewPerformance.swiftmodule"]
+    description: "Compiling Swift Module 'ViewPerformance' (4 sources)"
+    args: ["/usr/share/swift/usr/bin/swiftc","-module-name","ViewPerformance","-emit-dependencies","-emit-module","-emit-module-path","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/Modules/ViewPerformance.swiftmodule","-output-file-map","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/output-file-map.json","-parse-as-library","-incremental","-c","@/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/sources","-I","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/Modules","-target","x86_64-unknown-linux-gnu","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/index/store","-Onone","-enable-testing","-j4","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-Xcc","-fmodule-map-file=/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformanceObjC.build/module.modulemap","-Xcc","-I","-Xcc","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformanceObjC/include","-Xcc","-fmodule-map-file=/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/SimpleDebugger.build/module.modulemap","-Xcc","-I","-Xcc","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/checkouts/SimpleDebugger/Sources/SimpleDebugger/include","-module-cache-path","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ModuleCache","-parseable-output","-parse-as-library","-emit-objc-header","-emit-objc-header-path","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/include/ViewPerformance-Swift.h","-swift-version","6","-g","-Xcc","-fPIC","-Xcc","-g","-package-name","swiftui_viewperformance","-Xcc","-fno-omit-frame-pointer"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformance/","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformanceObjC/","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Package.swift","/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

@@ -1,0 +1,3 @@
+module ViewPerformance {
+    header "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/.build/x86_64-unknown-linux-gnu/debug/ViewPerformance.build/include/ViewPerformance-Swift.h"
+}

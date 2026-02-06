@@ -1,6 +1,7 @@
 #import "Hook.h"
 #import "SimpleDebugger.h"
 #include <mach/mach_time.h>
+#include <os/log.h>
 
 SimpleDebugger *debugger = new SimpleDebugger();
 
@@ -27,8 +28,16 @@ void breakpointCallback(mach_port_t thread, arm_thread_state64_t state, std::fun
   NSString *name = startsToName[@(state.__pc)];
   uint64_t startTime = nowTicks();
   if (name != nil) {
-    // Entering body
+    // Entering body or sizeThatFits
     uint64_t lr = state.__lr;
+    
+    // If this is a Layout.sizeThatFits call, capture x2 (subviews parameter)
+    if ([name hasPrefix:@"Layout:"]) {
+      uint64_t subviewsPtr = state.__x[2];
+      os_log_t log = os_log_create("com.sentry.viewperformance", "layout");
+      os_log(log, "Layout.sizeThatFits entering %{public}@ with subviews at 0x%llx", name, subviewsPtr);
+    }
+    
     NSMutableArray<NSNumber *> *starts = returnToStarts[@(lr)];
     if (starts != nil) {
       [starts addObject:@(startTime)];

@@ -69,6 +69,47 @@ private func parseConformance(conformance: UnsafePointer<ProtocolConformanceDesc
   return nil
 }
 
+/// Parse Layout conformances without skipping generic types
+private func parseLayoutConformance(conformance: UnsafePointer<ProtocolConformanceDescriptor>) -> LookupResult? {
+  let flags = conformance.pointee.conformanceFlags
+
+  guard case .DirectTypeDescriptor = flags.kind else {
+    return nil
+  }
+
+  guard conformance.pointee.protocolDescriptor % 2 == 1 else {
+    return nil
+  }
+  let descriptorOffset = Int(conformance.pointee.protocolDescriptor & ~1)
+  let jumpPtr = UnsafeRawPointer(conformance).advanced(by: MemoryLayout<ProtocolConformanceDescriptor>.offset(of: \.protocolDescriptor)!).advanced(by: descriptorOffset)
+  let address = jumpPtr.load(as: UInt64.self)
+
+  // Address will be 0 if the protocol is not available (such as only defined on a newer OS)
+  guard address != 0 else {
+    return nil
+  }
+  let protoPtr = UnsafeRawPointer(bitPattern: UInt(address))!
+  let proto = protoPtr.load(as: ProtocolDescriptor.self)
+  let namePtr = protoPtr.advanced(by: MemoryLayout<ProtocolDescriptor>.offset(of: \.name)!).advanced(by: Int(proto.name))
+  let protocolName = String(cString: namePtr.assumingMemoryBound(to: CChar.self))
+  guard protocolName == "Layout" else {
+    return nil
+  }
+
+  let typeDescriptorPointer = UnsafeRawPointer(conformance).advanced(by: MemoryLayout<ProtocolConformanceDescriptor>.offset(of: \.nominalTypeDescriptor)!).advanced(by: Int(conformance.pointee.nominalTypeDescriptor))
+
+  let descriptor = typeDescriptorPointer.assumingMemoryBound(to: TargetModuleContextDescriptor.self)
+  
+  // Do NOT skip generic types for Layout (unlike View parsing)
+  // Many Layout conformances are generic, e.g., LoggedLayout<Base>
+
+  if let name = getTypeName(descriptor: descriptor),
+     [ContextDescriptorKind.Class, ContextDescriptorKind.Struct, ContextDescriptorKind.Enum].contains(descriptor.pointee.flags.kind) {
+    return (name, protocolName, 0)
+  }
+  return nil
+}
+
 #if arch(i386) || arch(arm) || arch(arm64_32)
 typealias mach_header_type = mach_header
 #else
@@ -115,6 +156,62 @@ func getViews() -> [LookupResult] {
                 types.append((result.0, result.1, UInt64(Int(bitPattern: bodyThunk))))
               }
             }
+        }
+        sectData = sectData.successor()
+      }
+    }
+  }
+  return types
+}
+
+/// Scans loaded images for types conforming to SwiftUI's `Layout` protocol
+/// and returns their `sizeThatFits(proposal:subviews:cache:)` thunks.
+func getLayouts() -> [LookupResult] {
+  let images = _dyld_image_count()
+  var types = [LookupResult]()
+  for i in 0..<images {
+    let header = _dyld_get_image_header(i)!
+    let headerType = UnsafeRawPointer(header).assumingMemoryBound(to: mach_header_type.self)
+
+    // Anything in the dylib cache is a system library that we should not include
+    guard headerType.pointee.flags & MH_DYLIB_IN_CACHE == 0 else {
+      continue
+    }
+
+    let imageName = String(cString: _dyld_get_image_name(i))
+    guard !imageName.contains(".simruntime") && !imageName.contains(".platform") && !imageName.starts(with: "/usr/lib/") && !imageName.starts(with: "/System/Library/") else {
+      continue
+    }
+
+    guard let target = lookupSwiftUILayoutSizeThatFitsRequirementDescriptor() else {
+      print("Warning: Could not resolve Layout.sizeThatFits requirement descriptor")
+      continue
+    }
+    
+    var size: UInt = 0
+    let sectStart = UnsafeRawPointer(
+      getsectiondata(
+        headerType,
+        "__TEXT",
+        "__swift5_proto",
+        &size))?.assumingMemoryBound(to: Int32.self)
+    if var sectData = sectStart {
+      for _ in 0..<Int(size)/MemoryLayout<Int32>.size {
+        let conformanceRaw = UnsafeRawPointer(sectData)
+          .advanced(by: Int(sectData.pointee))
+        let conformance = conformanceRaw
+          .assumingMemoryBound(to: ProtocolConformanceDescriptor.self)
+        
+        // Parse conformance but DO NOT skip generic types (unlike getViews)
+        if let result = parseLayoutConformance(conformance: conformance) {
+          print("Found Layout: \(result.name)")
+          if let offset = findBodyDescriptorFieldOffsetByResolvingRelatives(record: conformance, bodyDescriptor: target, maxBytes: 256) {
+            let funcOffsetPtr = conformanceRaw.advanced(by: offset * 4 + 4)
+            let offsetToFunc = funcOffsetPtr.load(as: Int32.self)
+            if let sizeThatFitsThunk = resolveRelativePointer(fieldAddr: funcOffsetPtr, raw: offsetToFunc) {
+              types.append((result.0, result.1, UInt64(Int(bitPattern: sizeThatFitsThunk))))
+            }
+          }
         }
         sectData = sectData.successor()
       }
@@ -188,5 +285,27 @@ func lookupSwiftUIViewBodyRequirementDescriptor() -> UnsafeMutableRawPointer? {
         print("dlsym failed for \(symbol): \(msg)")
     }
 
+    return sym
+}
+
+/// Returns the address of SwiftUI's `Layout.sizeThatFits(proposal:subviews:cache:)` requirement descriptor:
+/// `$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq`
+///
+/// - Note: This is a *descriptor* address (not a function pointer).
+func lookupSwiftUILayoutSizeThatFitsRequirementDescriptor() -> UnsafeMutableRawPointer? {
+    let symbol = "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq"
+    var sym = dlsym(UnsafeMutableRawPointer(bitPattern: -2), symbol) // -2 == RTLD_DEFAULT
+    
+    // If exact symbol doesn't resolve, try broader search
+    if sym == nil {
+        print("Exact symbol lookup failed, trying broader search for Layout.sizeThatFits descriptor")
+        // TODO: Implement broader search if needed
+        // For now, just report the failure
+        if let err = dlerror() {
+            let msg = String(cString: err)
+            print("dlsym failed for \(symbol): \(msg)")
+        }
+    }
+    
     return sym
 }

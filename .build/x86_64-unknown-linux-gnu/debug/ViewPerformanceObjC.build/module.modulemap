@@ -1,4 +1,0 @@
-module ViewPerformanceObjC {
-    umbrella "/home/runner/work/SwiftUI-ViewPerformance/SwiftUI-ViewPerformance/Sources/ViewPerformanceObjC/include"
-    export *
-}

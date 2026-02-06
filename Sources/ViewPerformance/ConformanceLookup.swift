@@ -293,19 +293,99 @@ func lookupSwiftUIViewBodyRequirementDescriptor() -> UnsafeMutableRawPointer? {
 ///
 /// - Note: This is a *descriptor* address (not a function pointer).
 func lookupSwiftUILayoutSizeThatFitsRequirementDescriptor() -> UnsafeMutableRawPointer? {
-    let symbol = "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq"
-    var sym = dlsym(UnsafeMutableRawPointer(bitPattern: -2), symbol) // -2 == RTLD_DEFAULT
+    // Try the primary known symbol first
+    let primarySymbol = "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq"
+    var sym = dlsym(UnsafeMutableRawPointer(bitPattern: -2), primarySymbol) // -2 == RTLD_DEFAULT
     
-    // If exact symbol doesn't resolve, try broader search
+    // If exact symbol doesn't resolve, try alternative variations
     if sym == nil {
-        print("Exact symbol lookup failed, trying broader search for Layout.sizeThatFits descriptor")
-        // TODO: Implement broader search if needed
-        // For now, just report the failure
-        if let err = dlerror() {
-            let msg = String(cString: err)
-            print("dlsym failed for \(symbol): \(msg)")
+        print("Primary symbol lookup failed, trying alternative symbol variations")
+        
+        // Try common variations that might exist in different Swift/SwiftUI versions
+        let alternativeSymbols = [
+            // Without CoreFoundation prefix
+            "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq",
+            // Older Swift ABI version
+            "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA0bC0G0V_AA0i10SubviewsJ0Vz1_QPtFTq",
+            // Without cache parameter in older versions
+            "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews7CoreFou0F4SizeVAA012ProposedViewI0V_AA0h10SubviewsI0VtFTq",
+        ]
+        
+        for alternativeSymbol in alternativeSymbols {
+            sym = dlsym(UnsafeMutableRawPointer(bitPattern: -2), alternativeSymbol)
+            if sym != nil {
+                print("Found Layout.sizeThatFits descriptor using alternative symbol: \(alternativeSymbol)")
+                return sym
+            }
+        }
+        
+        // If still not found, try broader search through loaded images
+        print("Alternative symbols not found, attempting broader search through loaded images")
+        sym = searchForLayoutSizeThatFitsDescriptor()
+        
+        if sym == nil {
+            if let err = dlerror() {
+                let msg = String(cString: err)
+                print("dlsym failed for \(primarySymbol): \(msg)")
+            }
+            print("Warning: Could not find Layout.sizeThatFits requirement descriptor through any method")
         }
     }
     
     return sym
+}
+
+/// Searches through loaded images for a symbol matching the Layout.sizeThatFits pattern
+private func searchForLayoutSizeThatFitsDescriptor() -> UnsafeMutableRawPointer? {
+    let images = _dyld_image_count()
+    
+    for i in 0..<images {
+        guard let imageName = _dyld_get_image_name(i) else { continue }
+        let imageNameStr = String(cString: imageName)
+        
+        // Only search in SwiftUI framework
+        guard imageNameStr.contains("SwiftUI.framework") || imageNameStr.contains("libswiftUI") else {
+            continue
+        }
+        
+        print("Searching for Layout.sizeThatFits descriptor in: \(imageNameStr)")
+        
+        // Try to use dlopen to get a handle to the specific image
+        guard let handle = dlopen(imageName, RTLD_LAZY | RTLD_NOLOAD) else {
+            continue
+        }
+        defer { dlclose(handle) }
+        
+        // Search for symbols containing key patterns:
+        // - Must start with "$s7SwiftUI" (SwiftUI module)
+        // - Must contain "6Layout" (Layout protocol) 
+        // - Must contain "12sizeThatFits" (sizeThatFits method)
+        // - Must end with "Tq" (requirement descriptor)
+        
+        // Since we can't enumerate symbols directly via dyld, try common patterns
+        let searchPatterns = [
+            // Pattern with different type encodings
+            "$s7SwiftUI6LayoutP12sizeThatFits",
+        ]
+        
+        for basePattern in searchPatterns {
+            // Try to construct possible full symbols with different encodings
+            let possibleSuffixes = [
+                "8proposal8subviews5cache7CoreFou0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq",
+                "8proposal8subviews5cache0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq",
+                "8proposal8subviews7CoreFou0F4SizeVAA012ProposedViewI0V_AA0h10SubviewsI0VtFTq",
+                "8proposal8subviewsAA0dI0VAA17ProposedViewSizeV_AA0cH0VztFTq",
+            ]
+            
+            for suffix in possibleSuffixes {
+                let testSymbol = basePattern + suffix
+                if let ptr = dlsym(handle, testSymbol) {
+                    print("Found Layout.sizeThatFits descriptor via broader search: \(testSymbol)")
+                    return ptr
+                }
+            }
+        }
+    }
+    
+    return nil
 }

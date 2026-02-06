@@ -54,10 +54,17 @@ public final class BodyTracker {
           self.timingMap[name] = samples
         }
     }
+    
+    // Hook View.body calls
     getViews().forEach { name, _, bodyThunk in
       if !name.contains("DebugOverlayView") {
         hook.add(bodyThunk, named: name)
       }
+    }
+    
+    // Hook Layout.sizeThatFits calls
+    getLayouts().forEach { name, _, sizeThatFitsThunk in
+      hook.add(sizeThatFitsThunk, named: "Layout:\(name).sizeThatFits")
     }
   }
 }

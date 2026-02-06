@@ -167,6 +167,11 @@ func getViews() -> [LookupResult] {
 /// Scans loaded images for types conforming to SwiftUI's `Layout` protocol
 /// and returns their `sizeThatFits(proposal:subviews:cache:)` thunks.
 func getLayouts() -> [LookupResult] {
+  guard let target = lookupSwiftUILayoutSizeThatFitsRequirementDescriptor() else {
+    print("Warning: Could not resolve Layout.sizeThatFits requirement descriptor - Layout tracking will be disabled")
+    return []
+  }
+  
   let images = _dyld_image_count()
   var types = [LookupResult]()
   for i in 0..<images {
@@ -180,11 +185,6 @@ func getLayouts() -> [LookupResult] {
 
     let imageName = String(cString: _dyld_get_image_name(i))
     guard !imageName.contains(".simruntime") && !imageName.contains(".platform") && !imageName.starts(with: "/usr/lib/") && !imageName.starts(with: "/System/Library/") else {
-      continue
-    }
-
-    guard let target = lookupSwiftUILayoutSizeThatFitsRequirementDescriptor() else {
-      print("Warning: Could not resolve Layout.sizeThatFits requirement descriptor")
       continue
     }
     

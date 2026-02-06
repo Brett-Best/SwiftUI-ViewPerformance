@@ -288,100 +288,187 @@ func lookupSwiftUIViewBodyRequirementDescriptor() -> UnsafeMutableRawPointer? {
     return sym
 }
 
-/// Returns the address of SwiftUI's `Layout.sizeThatFits(proposal:subviews:cache:)` requirement descriptor:
-/// `$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq`
+/// Returns the address of SwiftUI's `Layout.sizeThatFits(proposal:subviews:cache:)` requirement descriptor
+/// by finding and introspecting the Layout protocol descriptor.
 ///
 /// - Note: This is a *descriptor* address (not a function pointer).
 func lookupSwiftUILayoutSizeThatFitsRequirementDescriptor() -> UnsafeMutableRawPointer? {
-    // Try the primary known symbol first
+    // Try the primary known symbol first (fast path for matching versions)
     let primarySymbol = "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq"
     var sym = dlsym(UnsafeMutableRawPointer(bitPattern: -2), primarySymbol) // -2 == RTLD_DEFAULT
     
-    // If exact symbol doesn't resolve, try alternative variations
-    if sym == nil {
-        print("Primary symbol lookup failed, trying alternative symbol variations")
-        
-        // Try common variations that might exist in different Swift/SwiftUI versions
-        let alternativeSymbols = [
-            // Without CoreFoundation prefix
-            "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq",
-            // Older Swift ABI version
-            "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA0bC0G0V_AA0i10SubviewsJ0Vz1_QPtFTq",
-            // Without cache parameter in older versions
-            "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews7CoreFou0F4SizeVAA012ProposedViewI0V_AA0h10SubviewsI0VtFTq",
-        ]
-        
-        for alternativeSymbol in alternativeSymbols {
-            sym = dlsym(UnsafeMutableRawPointer(bitPattern: -2), alternativeSymbol)
-            if sym != nil {
-                print("Found Layout.sizeThatFits descriptor using alternative symbol: \(alternativeSymbol)")
-                return sym
-            }
-        }
-        
-        // If still not found, try broader search through loaded images
-        print("Alternative symbols not found, attempting broader search through loaded images")
-        sym = searchForLayoutSizeThatFitsDescriptor()
-        
-        if sym == nil {
-            if let err = dlerror() {
-                let msg = String(cString: err)
-                print("dlsym failed for \(primarySymbol): \(msg)")
-            }
-            print("Warning: Could not find Layout.sizeThatFits requirement descriptor through any method")
+    if sym != nil {
+        print("Found Layout.sizeThatFits descriptor using primary symbol")
+        return sym
+    }
+    
+    // Primary symbol failed - try extracting from a known Layout conformance in SwiftUI
+    print("Primary symbol lookup failed, attempting to extract from SwiftUI Layout conformances")
+    
+    if let descriptor = extractLayoutSizeThatFitsDescriptorFromSwiftUI() {
+        print("Successfully extracted Layout.sizeThatFits descriptor from SwiftUI protocol conformance")
+        return descriptor
+    }
+    
+    // Last resort: try alternative symbol variations
+    print("Extraction failed, trying alternative symbol variations")
+    let alternativeSymbols = [
+        "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq",
+        "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews5cache7CoreFou0G4SizeVAA0bC0G0V_AA0i10SubviewsJ0Vz1_QPtFTq",
+        "$s7SwiftUI6LayoutP12sizeThatFits8proposal8subviews7CoreFou0F4SizeVAA012ProposedViewI0V_AA0h10SubviewsI0VtFTq",
+    ]
+    
+    for alternativeSymbol in alternativeSymbols {
+        sym = dlsym(UnsafeMutableRawPointer(bitPattern: -2), alternativeSymbol)
+        if sym != nil {
+            print("Found Layout.sizeThatFits descriptor using alternative symbol")
+            return sym
         }
     }
     
-    return sym
+    print("Warning: Could not find Layout.sizeThatFits requirement descriptor through any method")
+    return nil
 }
 
-/// Searches through loaded images for a symbol matching the Layout.sizeThatFits pattern
-private func searchForLayoutSizeThatFitsDescriptor() -> UnsafeMutableRawPointer? {
+/// Extracts the sizeThatFits requirement descriptor by finding a Layout conformance in SwiftUI
+/// and reading its witness table structure.
+private func extractLayoutSizeThatFitsDescriptorFromSwiftUI() -> UnsafeMutableRawPointer? {
     let images = _dyld_image_count()
     
     for i in 0..<images {
-        guard let imageName = _dyld_get_image_name(i) else { continue }
-        let imageNameStr = String(cString: imageName)
+        let header = _dyld_get_image_header(i)!
+        let headerType = UnsafeRawPointer(header).assumingMemoryBound(to: mach_header_type.self)
         
-        // Only search in SwiftUI framework
-        guard imageNameStr.contains("SwiftUI.framework") || imageNameStr.contains("libswiftUI") else {
+        let imageName = String(cString: _dyld_get_image_name(i))
+        
+        // Only look in SwiftUI framework itself - it should have Layout conformances
+        guard imageName.contains("SwiftUI.framework") || imageName.contains("libswiftUI") else {
             continue
         }
         
-        print("Searching for Layout.sizeThatFits descriptor in: \(imageNameStr)")
+        print("Searching for Layout protocol conformances in SwiftUI: \(imageName)")
         
-        // Try to use dlopen to get a handle to the specific image
-        guard let handle = dlopen(imageName, RTLD_LAZY | RTLD_NOLOAD) else {
-            continue
-        }
-        defer { dlclose(handle) }
+        var size: UInt = 0
+        let sectStart = UnsafeRawPointer(
+            getsectiondata(
+                headerType,
+                "__TEXT",
+                "__swift5_proto",
+                &size))?.assumingMemoryBound(to: Int32.self)
         
-        // Search for symbols containing key patterns:
-        // - Must start with "$s7SwiftUI" (SwiftUI module)
-        // - Must contain "6Layout" (Layout protocol) 
-        // - Must contain "12sizeThatFits" (sizeThatFits method)
-        // - Must end with "Tq" (requirement descriptor)
+        guard var sectData = sectStart else { continue }
         
-        // Since we can't enumerate symbols directly via dyld, try common patterns
-        let searchPatterns = [
-            // Pattern with different type encodings
-            "$s7SwiftUI6LayoutP12sizeThatFits",
-        ]
-        
-        for basePattern in searchPatterns {
-            // Try to construct possible full symbols with different encodings
-            let possibleSuffixes = [
-                "8proposal8subviews5cache7CoreFou0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq",
-                "8proposal8subviews5cache0G4SizeVAA012ProposedViewJ0V_AA0i10SubviewsJ0Vz1_QPtFTq",
-                "8proposal8subviews7CoreFou0F4SizeVAA012ProposedViewI0V_AA0h10SubviewsI0VtFTq",
-                "8proposal8subviewsAA0dI0VAA17ProposedViewSizeV_AA0cH0VztFTq",
-            ]
+        for _ in 0..<Int(size)/MemoryLayout<Int32>.size {
+            let conformanceRaw = UnsafeRawPointer(sectData)
+                .advanced(by: Int(sectData.pointee))
+            let conformance = conformanceRaw
+                .assumingMemoryBound(to: ProtocolConformanceDescriptor.self)
             
-            for suffix in possibleSuffixes {
-                let testSymbol = basePattern + suffix
-                if let ptr = dlsym(handle, testSymbol) {
-                    print("Found Layout.sizeThatFits descriptor via broader search: \(testSymbol)")
-                    return ptr
+            // Check if this is a Layout protocol conformance
+            if let layoutResult = parseLayoutConformanceForDescriptor(conformance: conformance) {
+                print("Found Layout conformance in SwiftUI: \(layoutResult.name)")
+                
+                // Try to extract the sizeThatFits requirement descriptor from this conformance
+                // The witness table should have references to requirement descriptors
+                if let descriptor = extractRequirementDescriptorFromConformance(
+                    conformance: conformance,
+                    protocolName: "Layout",
+                    methodName: "sizeThatFits"
+                ) {
+                    return descriptor
+                }
+            }
+            
+            sectData = sectData.successor()
+        }
+    }
+    
+    return nil
+}
+
+/// Parse a conformance to check if it's a Layout conformance (used for descriptor extraction)
+private func parseLayoutConformanceForDescriptor(conformance: UnsafePointer<ProtocolConformanceDescriptor>) -> LookupResult? {
+    let flags = conformance.pointee.conformanceFlags
+    
+    guard case .DirectTypeDescriptor = flags.kind else {
+        return nil
+    }
+    
+    guard conformance.pointee.protocolDescriptor % 2 == 1 else {
+        return nil
+    }
+    
+    let descriptorOffset = Int(conformance.pointee.protocolDescriptor & ~1)
+    let jumpPtr = UnsafeRawPointer(conformance).advanced(by: MemoryLayout<ProtocolConformanceDescriptor>.offset(of: \.protocolDescriptor)!).advanced(by: descriptorOffset)
+    let address = jumpPtr.load(as: UInt64.self)
+    
+    guard address != 0 else {
+        return nil
+    }
+    
+    let protoPtr = UnsafeRawPointer(bitPattern: UInt(address))!
+    let proto = protoPtr.load(as: ProtocolDescriptor.self)
+    let namePtr = protoPtr.advanced(by: MemoryLayout<ProtocolDescriptor>.offset(of: \.name)!).advanced(by: Int(proto.name))
+    let protocolName = String(cString: namePtr.assumingMemoryBound(to: CChar.self))
+    
+    guard protocolName == "Layout" else {
+        return nil
+    }
+    
+    let typeDescriptorPointer = UnsafeRawPointer(conformance).advanced(by: MemoryLayout<ProtocolConformanceDescriptor>.offset(of: \.nominalTypeDescriptor)!).advanced(by: Int(conformance.pointee.nominalTypeDescriptor))
+    let descriptor = typeDescriptorPointer.assumingMemoryBound(to: TargetModuleContextDescriptor.self)
+    
+    if let name = getTypeName(descriptor: descriptor),
+       [ContextDescriptorKind.Class, ContextDescriptorKind.Struct, ContextDescriptorKind.Enum].contains(descriptor.pointee.flags.kind) {
+        return (name, protocolName, 0)
+    }
+    return nil
+}
+
+/// Attempts to extract a specific requirement descriptor from a protocol conformance witness table
+private func extractRequirementDescriptorFromConformance(
+    conformance: UnsafePointer<ProtocolConformanceDescriptor>,
+    protocolName: String,
+    methodName: String
+) -> UnsafeMutableRawPointer? {
+    // The witness table offset is stored in the conformance
+    // We need to scan through it to find requirement descriptors
+    // This is a heuristic approach: scan the conformance record region for pointers
+    // that look like they could be requirement descriptors
+    
+    let conformanceRaw = UnsafeRawPointer(conformance)
+    let scanBytes = 512 // Scan a reasonable region
+    
+    // Look for patterns that match requirement descriptor references
+    // Requirement descriptors typically have relative offsets
+    for offset in stride(from: 0, to: scanBytes, by: 4) {
+        let fieldAddr = conformanceRaw.advanced(by: offset)
+        let raw = fieldAddr.loadUnaligned(as: Int32.self)
+        
+        // Skip if it doesn't look like a reasonable relative offset
+        guard abs(raw) < 100000000 else { continue }
+        
+        if let ptr = resolveRelativePointer(fieldAddr: fieldAddr, raw: raw) {
+            // Check if this pointer looks like it could be a requirement descriptor
+            // by trying to read it as a string and looking for "sizeThatFits"
+            let testPtr = ptr.assumingMemoryBound(to: UInt8.self)
+            
+            // Try to read a small region and look for ASCII patterns
+            var bytes: [UInt8] = []
+            for i in 0..<100 {
+                let byte = testPtr.advanced(by: i).pointee
+                if byte == 0 { break }
+                if byte >= 32 && byte <= 126 {
+                    bytes.append(byte)
+                } else if bytes.count > 0 {
+                    break
+                }
+            }
+            
+            if bytes.count > 0, let str = String(bytes: bytes, encoding: .utf8) {
+                if str.contains("sizeThatFits") {
+                    print("Found potential sizeThatFits requirement descriptor at offset \(offset)")
+                    return UnsafeMutableRawPointer(mutating: ptr)
                 }
             }
         }
